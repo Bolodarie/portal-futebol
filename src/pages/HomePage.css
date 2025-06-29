@@ -1,0 +1,35 @@
+.main-content {
+    padding: 40px;
+    background-color: #F4F4F9;
+}
+
+.main-content h2 {
+    color: #333333;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.main-content p {
+    color: #666666;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+
+.games-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+/* responsividade */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 20px;
+    }
+
+    .main-content h2 {
+        font-size: 28px;
+    }
+}

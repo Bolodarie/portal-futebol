@@ -1,0 +1,4 @@
+[
+  { "id": 1, "timeA": "Flamengo", "logoA": "url_logo_fla.png", "timeB": "Palmeiras", "logoB": "url_logo_pal.png", "horario": "16:00", "campeonato": "Brasileirão Série A" },
+  { "id": 2, "timeA": "Boca Juniors", "logoA": "url_logo_boca.png", "timeB": "River Plate", "logoB": "url_logo_river.png", "horario": "21:00", "campeonato": "Libertadores" }
+]
