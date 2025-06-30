@@ -28,8 +28,8 @@ const TeamDetailPage = () => {
        toast.info(`${team.nome} removido dos favoritos.`);
     } else {
       addFavorite(teamItem);
-       toast.info(`${team.nome} removido dos favoritos.`);
-    }
+       toast.info(`${team.nome} adicionado aos favoritos.`);
+    
   };
 
   return (

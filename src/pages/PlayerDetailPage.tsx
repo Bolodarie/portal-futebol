@@ -28,7 +28,7 @@ const PlayerDetailPage = () => {
        toast.info(`${player.nome} removido dos favoritos.`);
     } else {
       addFavorite(playerItem);
-       toast.info(`${player.nome} adicionado dos favoritos.`);
+       toast.info(`${player.nome} adicionado aos favoritos.`);
     }
   };
 

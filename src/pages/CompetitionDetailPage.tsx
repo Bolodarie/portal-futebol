@@ -27,7 +27,7 @@ const CompetitionDetailPage = () => {
        toast.info(`${competition.nome} removido dos favoritos.`);
     } else {
       addFavorite(competitionItem);
-       toast.info(`${competition.nome} removido dos favoritos.`);
+       toast.info(`${competition.nome} adicionado aos favoritos.`);
     }
   };
 
