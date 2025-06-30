@@ -1,16 +1,25 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+// 1. Importe o useNavigate
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
-import { useAuth } from '../context/AuthContext'; // Importe o contexto
+import { useAuth } from '../context/AuthContext';
+import DetailHeader from '../components/DetailHeader';
+import StatCard from '../components/StatCard';
+import './DetailPage.css';
 
 const PlayerDetailPage = () => {
   const { id } = useParams();
   const player = mockDatabase.jogadores.find(j => j.id === parseInt(id));
   
-  // Pega o estado e as funções do contexto
+  // 2. Inicialize o hook de navegação
+  const navigate = useNavigate();
+  
   const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
   
-  // Verifica se este jogador já está nos favoritos
+  if (!player) {
+    return <div className="main-content"><h2>Jogador não encontrado!</h2></div>;
+  }
+
   const isFavorited = favorites.some(fav => fav.id === player.id && fav.type === 'player');
 
   const handleFavoriteClick = () => {
@@ -22,24 +31,27 @@ const PlayerDetailPage = () => {
     }
   };
 
-  if (!player) {
-    return <div className="main-content"><h2>Jogador não encontrado!</h2></div>;
-  }
-
   return (
     <div className="main-content">
-      <h1>{player.nome}</h1>
-      {/* Mostra o botão apenas se o usuário estiver logado */}
-      {isLoggedIn && (
-        <button onClick={handleFavoriteClick} className="auth-button" style={{marginBottom: '20px', width: 'auto'}}>
-          {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
-        </button>
-      )}
-      <ul>
-        <li><strong>Time:</strong> {player.time}</li>
-        {/* ... outras estatísticas */}
-      </ul>
-      <Link to="/">Voltar para a home</Link>
+      <DetailHeader name={player.nome}>
+        {isLoggedIn && (
+          <button onClick={handleFavoriteClick} className="auth-button" style={{width: 'auto'}}>
+            {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
+          </button>
+        )}
+      </DetailHeader>
+
+      <div className="stats-grid">
+        <StatCard title="Time" value={player.time} />
+        <StatCard title="Posição" value={player.posicao} />
+        <StatCard title="Gols na Carreira" value={player.gols} />
+        <StatCard title="Assistências" value={player.assistencias} />
+      </div>
+
+      {/* 3. Troque o <Link> por um <button> que usa navigate(-1) */}
+      <button onClick={() => navigate(-1)} className="back-link">
+        ← Voltar
+      </button>
     </div>
   );
 };

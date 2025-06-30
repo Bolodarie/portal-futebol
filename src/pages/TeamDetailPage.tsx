@@ -1,22 +1,29 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+// 1. Importe o useNavigate
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
-import { useAuth } from '../context/AuthContext'; // Importando o contexto
+import { useAuth } from '../context/AuthContext';
+import DetailHeader from '../components/DetailHeader';
+import StatCard from '../components/StatCard';
+import './DetailPage.css';
 
 const TeamDetailPage = () => {
   const { id } = useParams();
   const team = mockDatabase.times.find(t => t.id === parseInt(id));
 
-  // Pega o estado e as funções do contexto
+  // 2. Inicialize o hook de navegação
+  const navigate = useNavigate();
+  
   const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
 
-  // Verifica se este time já está nos favoritos
+  if (!team) {
+    return <div className="main-content"><h2>Time não encontrado!</h2></div>;
+  }
+
   const isFavorited = favorites.some(fav => fav.id === team.id && fav.type === 'team');
 
   const handleFavoriteClick = () => {
-    // Cria o objeto 'item' com o formato que o nosso contexto espera
     const teamItem = { id: team.id, name: team.nome, type: 'team', path: `/time/${team.id}` };
-    
     if (isFavorited) {
       removeFavorite(teamItem);
     } else {
@@ -24,27 +31,26 @@ const TeamDetailPage = () => {
     }
   };
 
-  if (!team) {
-    return <div className="main-content"><h2>Time não encontrado!</h2></div>;
-  }
-
   return (
     <div className="main-content">
-      <h1>{team.nome}</h1>
+      <DetailHeader name={team.nome}>
+        {isLoggedIn && (
+          <button onClick={handleFavoriteClick} className="auth-button" style={{width: 'auto'}}>
+            {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
+          </button>
+        )}
+      </DetailHeader>
 
-      {/* Mostra o botão apenas se o usuário estiver logado */}
-      {isLoggedIn && (
-        <button onClick={handleFavoriteClick} className="auth-button" style={{marginBottom: '20px', width: 'auto'}}>
-          {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
-        </button>
-      )}
-      
-      <ul>
-        <li><strong>Técnico:</strong> {team.tecnico}</li>
-        <li><strong>Estádio:</strong> {team.estadio}</li>
-        <li><strong>Títulos (Brasileirão):</strong> {team.titulos}</li>
-      </ul>
-      <Link to="/">Voltar para a home</Link>
+      <div className="stats-grid">
+        <StatCard title="Técnico" value={team.tecnico} />
+        <StatCard title="Estádio" value={team.estadio} />
+        <StatCard title="Títulos (Brasileirão)" value={team.titulos} />
+      </div>
+
+      {/* 3. Troque o <Link> por um <button> que usa navigate(-1) */}
+      <button onClick={() => navigate(-1)} className="back-link">
+        ← Voltar
+      </button>
     </div>
   );
 };
