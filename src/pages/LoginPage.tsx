@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 import './AuthForm.css';
 
 const LoginPage = () => {
@@ -39,7 +40,7 @@ const LoginPage = () => {
       setErrors({});
       console.log('Tentativa de login com:', { email, password });
       login();
-      alert('Login realizado com sucesso!');
+      toast.success('Login realizado com sucesso!');
       navigate('/');
     }
   };

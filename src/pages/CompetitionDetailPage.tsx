@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 import DetailHeader from '../components/DetailHeader';
 import StatCard from '../components/StatCard';
 import './DetailPage.css';
@@ -23,8 +24,10 @@ const CompetitionDetailPage = () => {
     const competitionItem = { id: competition.id, name: competition.nome, type: 'competition', path: `/competicao/${competition.id}` };
     if (isFavorited) {
       removeFavorite(competitionItem);
+       toast.info(`${competition.nome} removido dos favoritos.`);
     } else {
       addFavorite(competitionItem);
+       toast.info(`${competition.nome} removido dos favoritos.`);
     }
   };
 

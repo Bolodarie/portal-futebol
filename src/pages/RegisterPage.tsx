@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import './AuthForm.css';
 
 const RegisterPage = () => {
@@ -36,7 +37,7 @@ const RegisterPage = () => {
     } else {
       setErrors({});
       console.log('Dados do Cadastro (Válidos):', { name, email, password });
-      alert('Cadastro realizado com sucesso! (Simulação)');
+      toast.success('Cadastro realizado com sucesso! (Simulação)');
     }
   };
 

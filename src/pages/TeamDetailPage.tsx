@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 import DetailHeader from '../components/DetailHeader';
 import StatCard from '../components/StatCard';
 import './DetailPage.css';
@@ -24,8 +25,10 @@ const TeamDetailPage = () => {
     const teamItem = { id: team.id, name: team.nome, type: 'team', path: `/time/${team.id}` };
     if (isFavorited) {
       removeFavorite(teamItem);
+       toast.info(`${team.nome} removido dos favoritos.`);
     } else {
       addFavorite(teamItem);
+       toast.info(`${team.nome} removido dos favoritos.`);
     }
   };
 

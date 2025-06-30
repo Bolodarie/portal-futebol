@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 import DetailHeader from '../components/DetailHeader';
 import StatCard from '../components/StatCard';
 import './DetailPage.css';
@@ -10,7 +11,6 @@ const PlayerDetailPage = () => {
   const { id } = useParams();
   const player = mockDatabase.jogadores.find(j => j.id === parseInt(id));
   
-  // 2. Inicialize o hook de navegação
   const navigate = useNavigate();
   
   const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
@@ -25,8 +25,10 @@ const PlayerDetailPage = () => {
     const playerItem = { id: player.id, name: player.nome, type: 'player', path: `/jogador/${player.id}` };
     if (isFavorited) {
       removeFavorite(playerItem);
+       toast.info(`${player.nome} removido dos favoritos.`);
     } else {
       addFavorite(playerItem);
+       toast.info(`${player.nome} adicionado dos favoritos.`);
     }
   };
 
