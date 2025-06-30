@@ -11,24 +11,18 @@ const LoginPage = () => {
 
   const { login } = useAuth();
   const navigate = useNavigate();
-
-  // Função de validação para o login
   const validateForm = () => {
     const newErrors = {};
     
-    // Validação do e-mail
     if (!email) {
       newErrors.email = 'O e-mail é obrigatório.';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'O formato do e-mail é inválido.';
     }
     
-    // --- CORREÇÃO AQUI ---
-    // Validação da senha
     if (!password) {
       newErrors.password = 'A senha é obrigatória.';
     } else if (password.length < 6) {
-      // Adicionamos a mesma verificação de tamanho que existe no cadastro
       newErrors.password = 'A senha deve ter no mínimo 6 caracteres.';
     }
     

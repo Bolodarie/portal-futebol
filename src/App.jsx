@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Componentes e Páginas
 import Navbar from './components/Navbar';
-import ProtectedRoute from './components/ProtectedRoute'; // 1. IMPORTE O NOSSO PROTETOR
+import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -20,7 +19,6 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        {/* --- Rotas Públicas --- */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -29,8 +27,6 @@ function App() {
         <Route path="/jogador/:id" element={<PlayerDetailPage />} />
         <Route path="/competicao/:id" element={<CompetitionDetailPage />} />
 
-        {/* --- Rotas Protegidas --- */}
-        {/* 2. ENVOLVA O 'element' DAS ROTAS PROTEGIDAS COM O <PROTECTEDROUTE> */}
         <Route
           path="/favoritos"
           element={
@@ -48,7 +44,6 @@ function App() {
           }
         />
 
-        {/* --- Rota 404 (Catch-all) --- */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>

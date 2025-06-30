@@ -31,15 +31,15 @@
 }
 
 .status.live {
-    background-color: #E74C3C; /* Vermelho */
+    background-color: #E74C3C;
 }
 
 .status.finished {
-    background-color: #95A5A6; /* Cinza */
+    background-color: #95A5A6;
 }
 
 .status.scheduled {
-    background-color: #3498DB; /* Azul */
+    background-color: #3498DB;
 }
 
 .score {
@@ -52,7 +52,7 @@
 }
 
 .stats {
-    list-style: none; /* Remove os pontos da lista */
+    list-style: none; 
     padding: 0;
     font-size: 14px;
     color: #555;

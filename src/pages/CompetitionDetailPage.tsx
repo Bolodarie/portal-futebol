@@ -1,5 +1,4 @@
 import React from 'react';
-// 1. Importe o useNavigate
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
 import { useAuth } from '../context/AuthContext';
@@ -10,8 +9,6 @@ import './DetailPage.css';
 const CompetitionDetailPage = () => {
   const { id } = useParams();
   const competition = mockDatabase.competicoes.find(c => c.id === parseInt(id));
-  
-  // 2. Inicialize o hook de navegação
   const navigate = useNavigate();
 
   const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
@@ -47,7 +44,6 @@ const CompetitionDetailPage = () => {
         <StatCard title="Atual Campeão" value={competition.atualCampeao} />
       </div>
 
-      {/* 3. Troque o <Link> por um <button> que usa navigate(-1) */}
       <button onClick={() => navigate(-1)} className="back-link">
         ← Voltar
       </button>

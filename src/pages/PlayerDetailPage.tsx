@@ -1,5 +1,4 @@
 import React from 'react';
-// 1. Importe o useNavigate
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
 import { useAuth } from '../context/AuthContext';
@@ -47,8 +46,6 @@ const PlayerDetailPage = () => {
         <StatCard title="Gols na Carreira" value={player.gols} />
         <StatCard title="Assistências" value={player.assistencias} />
       </div>
-
-      {/* 3. Troque o <Link> por um <button> que usa navigate(-1) */}
       <button onClick={() => navigate(-1)} className="back-link">
         ← Voltar
       </button>

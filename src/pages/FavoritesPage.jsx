@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import './SearchResultsPage.css'; // Reutilizando o CSS que já temos
+import './SearchResultsPage.css';
 
 const FavoritesPage = () => {
   const { favorites } = useAuth();

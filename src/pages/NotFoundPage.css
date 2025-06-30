@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: calc(100vh - 120px); /* Altura da tela menos o navbar e um pouco de espaço */
+  height: calc(100vh - 120px);
   padding: 20px;
   background-color: #F4F4F9;
 }

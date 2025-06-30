@@ -1,7 +1,6 @@
 import React from 'react';
 import './DetailHeader.css';
 
-// Recebe o nome da entidade e 'children' para o botão de favoritar
 const DetailHeader = ({ name, children }) => {
   return (
     <div className="detail-header">

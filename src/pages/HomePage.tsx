@@ -2,7 +2,6 @@ import React from 'react';
 import GameCard from '../components/GameCard';
 import './HomePage.css';
 
-// Dados de exemplo para os jogos
 const mockGames = [
   {
     id: 1,

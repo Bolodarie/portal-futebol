@@ -1,7 +1,6 @@
 import React from 'react';
 import './StatCard.css';
 
-// Este componente recebe um título, um valor e um ícone opcional
 const StatCard = ({ title, value }) => {
   return (
     <div className="stat-card">
