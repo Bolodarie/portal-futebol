@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Componentes e Páginas
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute'; // 1. IMPORTE O NOSSO PROTETOR
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -10,27 +13,42 @@ import TeamDetailPage from './pages/TeamDetailPage';
 import PlayerDetailPage from './pages/PlayerDetailPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import CompetitionDetailPage from './pages/CompetitionDetailPage';
-import NotFoundPage from './pages/NotFoundPage'; 
-
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        {/* Nossas rotas existentes */}
+        {/* --- Rotas Públicas --- */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/favoritos" element={<FavoritesPage />} />
         <Route path="/search" element={<SearchResultsPage />} />
         <Route path="/time/:id" element={<TeamDetailPage />} />
         <Route path="/jogador/:id" element={<PlayerDetailPage />} />
         <Route path="/competicao/:id" element={<CompetitionDetailPage />} />
 
-        {/* 2. ADICIONE A ROTA 404 NO FINAL */}
-        {/* O path="*" funciona como um "catch-all" para qualquer URL não correspondida */}
+        {/* --- Rotas Protegidas --- */}
+        {/* 2. ENVOLVA O 'element' DAS ROTAS PROTEGIDAS COM O <PROTECTEDROUTE> */}
+        <Route
+          path="/favoritos"
+          element={
+            <ProtectedRoute>
+              <FavoritesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* --- Rota 404 (Catch-all) --- */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>

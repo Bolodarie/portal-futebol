@@ -79,3 +79,14 @@
 .switch-form-link a:hover {
   text-decoration: underline;
 }
+.error-text {
+  color: #E74C3C; /* Vermelho */
+  font-size: 13px;
+  text-align: left;
+  margin-top: 5px;
+}
+
+/* Classe para adicionar uma borda vermelha ao input inválido */
+.input-error {
+  border-color: #E74C3C !important; /* !important para sobrepor outros estilos de borda */
+}

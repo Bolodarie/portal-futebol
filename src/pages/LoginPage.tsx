@@ -1,25 +1,53 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Importando o hook do nosso contexto
-import './AuthForm.css'; 
+import { useAuth } from '../context/AuthContext';
+import './AuthForm.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
-  const { login } = useAuth(); // Pega a função de login do contexto
-  const navigate = useNavigate(); // Hook para navegar entre as páginas
+  const [errors, setErrors] = useState({});
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  // Função de validação para o login
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Validação do e-mail
+    if (!email) {
+      newErrors.email = 'O e-mail é obrigatório.';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = 'O formato do e-mail é inválido.';
+    }
+    
+    // --- CORREÇÃO AQUI ---
+    // Validação da senha
+    if (!password) {
+      newErrors.password = 'A senha é obrigatória.';
+    } else if (password.length < 6) {
+      // Adicionamos a mesma verificação de tamanho que existe no cadastro
+      newErrors.password = 'A senha deve ter no mínimo 6 caracteres.';
+    }
+    
+    return newErrors;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // No futuro, aqui você faria uma chamada para o backend para validar o usuário.
-    // Por enquanto, estamos apenas simulando.
-    console.log('Tentativa de login com:', { email, password });
-    
-    // Simula o sucesso do login
-    login(); // Chama a função do contexto para atualizar o estado global para 'logado'
-    alert('Login realizado com sucesso!');
-    navigate('/'); // Leva o usuário para a home (que agora mostrará os favoritos)
+    const formErrors = validateForm();
+
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+    } else {
+      setErrors({});
+      console.log('Tentativa de login com:', { email, password });
+      login();
+      alert('Login realizado com sucesso!');
+      navigate('/');
+    }
   };
 
   return (
@@ -33,8 +61,9 @@ const LoginPage = () => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            className={errors.email ? 'input-error' : ''}
           />
+          {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="password">Senha</label>
@@ -43,8 +72,9 @@ const LoginPage = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            className={errors.password ? 'input-error' : ''}
           />
+          {errors.password && <p className="error-text">{errors.password}</p>}
         </div>
         <button type="submit" className="auth-button">Entrar</button>
         <p className="switch-form-link">
