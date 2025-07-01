@@ -12,8 +12,12 @@
   margin-bottom: 15px;
 }
 
-.result-item {
-  display: block;
+/* --- ESTILOS PARA OS RESULTADOS RICOS --- */
+
+.result-item-rich {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   padding: 12px;
   background-color: #fff;
   border-radius: 4px;
@@ -24,7 +28,30 @@
   transition: all 0.2s ease-in-out;
 }
 
-.result-item:hover {
+.result-item-rich:hover {
   transform: translateX(5px);
   background-color: #f8f9fa;
+}
+
+.result-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #eee;
+  background-color: #f0f2f5;
+}
+
+.result-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-name {
+  font-weight: bold;
+}
+
+.result-subtext {
+  font-size: 13px;
+  color: #666;
 }
