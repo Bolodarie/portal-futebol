@@ -24,6 +24,6 @@ def cors_test(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/matches/', include('matches.urls')),
-    path('cors-test/', cors_test),
+    path('api/', include('dados.urls')),
     # Em breve: teams, players, etc
 ]

@@ -24,7 +24,9 @@ def get_matches_today():
     date = datetime.now().strftime('%Y-%m-%d')
     url = f'{BASE_URL}/fixtures?date={date}&timezone=America%2FSao_Paulo'
     response = requests.get(url, headers=HEADERS)
-    return response.json()
+    if response.status_code == 200:
+        return response.json()
+    return {"error": "Erro ao buscar partidas"}
 
 def get_team_info(team_id):
     url = f"{BASE_URL}/teams?id={team_id}"
@@ -39,3 +41,10 @@ def get_player_info(player_id):
     if response.status_code == 200:
         return response.json()
     return {"error": "Erro ao buscar informações do jogador"}
+
+def get_match_info(match_id):
+    url = f'{BASE_URL}/fixtures/statistics?fixture={match_id}'
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        return response.json()
+    return {"error": "Erro ao buscar informações da partida"}

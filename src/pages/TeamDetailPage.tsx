@@ -29,7 +29,7 @@ const TeamDetailPage = () => {
     } else {
       addFavorite(teamItem);
        toast.info(`${team.nome} adicionado aos favoritos.`);
-    
+    }
   };
 
   return (

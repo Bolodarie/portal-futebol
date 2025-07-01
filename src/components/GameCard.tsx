@@ -1,9 +1,16 @@
 import React from 'react';
 import './GameCard.css';
+import { useNavigate } from 'react-router-dom';
 
 const GameCard = ({ game }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/match/${game.fixture.id}`);
+  };
+
   return (
-    <div className="game-card">
+    <div className="game-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
       <div className="game-info">
         <span className={`status finished`}>{game.fixture.status.long}</span>
         <div className="score">

@@ -18,6 +18,7 @@ import PlayerDetailPage from './pages/PlayerDetailPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import CompetitionDetailPage from './pages/CompetitionDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
+import MatchDetailPage from './pages/MatchDetailPage';
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route path="/jogador/:id" element={<PlayerDetailPage />} />
         <Route path="/competicao/:id" element={<CompetitionDetailPage />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/match/:matchId" element={<MatchDetailPage />} />
       </Routes>
     </Router>
   );

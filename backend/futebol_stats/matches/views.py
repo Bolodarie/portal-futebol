@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api_clients.api_football import get_matches_today
+from api_clients.api_football import get_matches_today, get_match_info
 
 class MatchesTodayView(APIView):
     def get(self, request):
@@ -163,4 +163,187 @@ class MatchesTodayView(APIView):
             ]
         }
         
+        return Response(data)
+    
+class MatchInfoView(APIView):
+    def get(self, request, matchId):
+        # data = get_match_info(matchId)
+
+        data = {
+            "get": "fixtures/statistics",
+            "parameters": {
+                "fixture": 1338435
+            },
+            "errors": [],
+            "results": 2,
+            "paging": {
+                "current": 1,
+                "total": 1
+            },
+            "response": [
+                {
+                    "team": {
+                        "id": 21103,
+                        "name": "Cuniburo",
+                        "logo": "https://media.api-sports.io/football/teams/21103.png"
+                    },
+                    "statistics": [
+                        {
+                            "type": "Shots on Goal",
+                            "value": 0
+                        },
+                        {
+                            "type": "Shots off Goal",
+                            "value": 5
+                        },
+                        {
+                            "type": "Total Shots",
+                            "value": 6
+                        },
+                        {
+                            "type": "Blocked Shots",
+                            "value": 1
+                        },
+                        {
+                            "type": "Shots insidebox",
+                            "value": 4
+                        },
+                        {
+                            "type": "Shots outsidebox",
+                            "value": 2
+                        },
+                        {
+                            "type": "Fouls",
+                            "value": 5
+                        },
+                        {
+                            "type": "Corner Kicks",
+                            "value": 1
+                        },
+                        {
+                            "type": "Offsides",
+                            "value": None
+                        },
+                        {
+                            "type": "Ball Possession",
+                            "value": "54%"
+                        },
+                        {
+                            "type": "Yellow Cards",
+                            "value": 0
+                        },
+                        {
+                            "type": "Red Cards",
+                            "value": None
+                        },
+                        {
+                            "type": "Goalkeeper Saves",
+                            "value": 1
+                        },
+                        {
+                            "type": "Total passes",
+                            "value": 424
+                        },
+                        {
+                            "type": "Passes accurate",
+                            "value": 338
+                        },
+                        {
+                            "type": "Passes %",
+                            "value": "80%"
+                        },
+                        {
+                            "type": "expected_goals",
+                            "value": None
+                        },
+                        {
+                            "type": "goals_prevented",
+                            "value": None
+                        }
+                    ]
+                },
+                {
+                    "team": {
+                        "id": 1156,
+                        "name": "Aucas",
+                        "logo": "https://media.api-sports.io/football/teams/1156.png"
+                    },
+                    "statistics": [
+                        {
+                            "type": "Shots on Goal",
+                            "value": 2
+                        },
+                        {
+                            "type": "Shots off Goal",
+                            "value": 5
+                        },
+                        {
+                            "type": "Total Shots",
+                            "value": 8
+                        },
+                        {
+                            "type": "Blocked Shots",
+                            "value": 1
+                        },
+                        {
+                            "type": "Shots insidebox",
+                            "value": 5
+                        },
+                        {
+                            "type": "Shots outsidebox",
+                            "value": 3
+                        },
+                        {
+                            "type": "Fouls",
+                            "value": 11
+                        },
+                        {
+                            "type": "Corner Kicks",
+                            "value": 3
+                        },
+                        {
+                            "type": "Offsides",
+                            "value": None
+                        },
+                        {
+                            "type": "Ball Possession",
+                            "value": "46%"
+                        },
+                        {
+                            "type": "Yellow Cards",
+                            "value": 3
+                        },
+                        {
+                            "type": "Red Cards",
+                            "value": None
+                        },
+                        {
+                            "type": "Goalkeeper Saves",
+                            "value": 0
+                        },
+                        {
+                            "type": "Total passes",
+                            "value": 358
+                        },
+                        {
+                            "type": "Passes accurate",
+                            "value": 284
+                        },
+                        {
+                            "type": "Passes %",
+                            "value": "79%"
+                        },
+                        {
+                            "type": "expected_goals",
+                            "value": None
+                        },
+                        {
+                            "type": "goals_prevented",
+                            "value": None
+                        }
+                    ]
+                }
+            ]
+        }
+
         return Response(data)

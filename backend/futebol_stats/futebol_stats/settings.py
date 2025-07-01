@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djoser',
     'matches',
+    'dados'
 ]
 
 MIDDLEWARE = [
@@ -56,11 +57,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # 👈 AGORA POR ÚLTIMO!
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173",  # onde roda seu frontend
-# ]
-
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # onde roda seu frontend
+]
 
 CORS_ALLOW_METHODS = [  # garante que GET seja aceito
     "DELETE",
