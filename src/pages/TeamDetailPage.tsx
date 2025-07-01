@@ -62,7 +62,7 @@ const TeamDetailPage = () => {
         const response = await fetch(`http://localhost:8000/api/favorites/teams/${team.id}/`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `Bearer ${token}`, // Envia o token JWT
+            'Authorization': `Token ${token}`, // Envia o token JWT
             'Content-Type': 'application/json',
           },
         });
@@ -112,8 +112,8 @@ const TeamDetailPage = () => {
 
   return (
     <div className="detail-page">
+      <img src={`https://media.api-sports.io/football/teams/${team.id}.png`} alt={`${team.name}`} />
       <DetailHeader
-        logo={team.logo}
         name={team.name}
         country={team.country}
         subtitle={`Fundado em ${team.founded}`}
@@ -126,9 +126,9 @@ const TeamDetailPage = () => {
       )}
 
       <div className="stats-grid">
-        <StatCard title="Estádio" value={venue.name} />
-        <StatCard title="Capacidade" value={venue.capacity.toLocaleString('pt-BR')} />
-        <StatCard title="Cidade" value={venue.city} />
+        <StatCard title="Estádio" value={venue.name || "N/A"} />
+        <StatCard title="Capacidade" value={venue.capacity || "N/A"} />
+        <StatCard title="Cidade" value={venue.city || "N/A"} />
         <StatCard title="País" value={team.country} />
       </div>
 
