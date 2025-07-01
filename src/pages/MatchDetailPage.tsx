@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './MatchDetailPage.css';
 
 const MatchDetailPage = () => {
@@ -96,7 +96,16 @@ const MatchDetailPage = () => {
           <div key={index} className="player-item">
             <span className="player-position">{playerObj.player.pos}</span>
             <span className="player-number">#{playerObj.player.number}</span>
-            <span className="player-name">{playerObj.player.name}</span>
+            {playerObj.player.id ? (
+              <Link 
+                to={`/jogador/${playerObj.player.id}`} 
+                className="player-name player-link"
+              >
+                {playerObj.player.name}
+              </Link>
+            ) : (
+              <span className="player-name">{playerObj.player.name}</span>
+            )}
           </div>
         ))}
       </div>

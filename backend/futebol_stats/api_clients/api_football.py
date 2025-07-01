@@ -36,7 +36,7 @@ def get_team_info(team_id):
     return {"error": "Erro ao buscar informações do time"}
 
 def get_player_info(player_id):
-    url = f"{BASE_URL}/players?id={player_id}&season=2023"  # temporada obrigatória
+    url = f"{BASE_URL}/players/profiles?player={player_id}"  # temporada obrigatória
     response = requests.get(url, headers=HEADERS)
     if response.status_code == 200:
         return response.json()
