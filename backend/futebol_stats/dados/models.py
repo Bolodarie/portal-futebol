@@ -27,11 +27,10 @@ class FavoritosTime(models.Model):
     Modelo para armazenar os times favoritos de um usuário.
     A chave estrangeira IdUsuario agora aponta para o modelo User do Django.
     """
-    # Id INTEGER PRIMARY KEY é criado automaticamente pelo Django como 'id'
-    # A chave estrangeira aponta para o modelo User do Django.
-    # db_column='IdUsuario' mapeia para o nome da coluna existente no seu banco de dados.
     IdUsuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column='IdUsuario')
-    IdTime = models.IntegerField(null=False) # Assumindo que IdTime é um ID externo
+    IdTime = models.IntegerField(null=False)
+    Nome = models.CharField(max_length=255, null=False)
+    Pais = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         db_table = 'FavoritosTime'
@@ -49,10 +48,8 @@ class FavoritosJogador(models.Model):
     Modelo para armazenar os jogadores favoritos de um usuário.
     A chave estrangeira IdUsuario agora aponta para o modelo User do Django.
     """
-    # Id INTEGER PRIMARY KEY é criado automaticamente pelo Django como 'id'
-    # A chave estrangeira aponta para o modelo User do Django.
     IdUsuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column='IdUsuario')
-    IdJogador = models.IntegerField(null=False) # Assumindo que IdJogador é um ID externo
+    IdJogador = models.IntegerField(null=False)
     Nome = models.CharField(max_length=255, null=False)
     Nacionalidade = models.CharField(max_length=100, blank=True, null=True)
     Posicao = models.CharField(max_length=100, blank=True, null=True)
@@ -66,26 +63,3 @@ class FavoritosJogador(models.Model):
 
     def __str__(self):
         return f"Usuário: {self.IdUsuario.username} - Jogador: {self.Nome}"
-
-# Tabela de FavoritosCompeticao
-class FavoritosCompeticao(models.Model):
-    """
-    Modelo para armazenar as competições favoritas de um usuário.
-    A chave estrangeira IdUsuario agora aponta para o modelo User do Django.
-    """
-    # Id INTEGER PRIMARY KEY é criado automaticamente pelo Django como 'id'
-    # A chave estrangeira aponta para o modelo User do Django.
-    IdUsuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, db_column='IdUsuario')
-    IdCampeonato = models.IntegerField(null=False) # Assumindo que IdCampeonato é um ID externo
-    Nome = models.CharField(max_length=255, null=False)
-    Pais = models.CharField(max_length=100, blank=True, null=True)
-
-    class Meta:
-        db_table = 'FavoritosCompeticao'
-        # Restrição para evitar duplicatas (IdUsuario, IdCampeonato)
-        unique_together = ('IdUsuario', 'IdCampeonato')
-        verbose_name = 'Competição Favorita'
-        verbose_name_plural = 'Competições Favoritas'
-
-    def __str__(self):
-        return f"Usuário: {self.IdUsuario.username} - Competição: {self.Nome}"

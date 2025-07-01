@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.db import transaction # Importa transaction para garantir atomicidade
 from .models import FavoritosJogador
+from .models import FavoritosTime
+from django.contrib.auth import get_user_model
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """
@@ -76,4 +78,24 @@ class FavoritosJogadorCreateSerializer(serializers.Serializer):
     IdJogador = serializers.IntegerField()
     Nome = serializers.CharField(max_length=255)
     Nacionalidade = serializers.CharField(max_length=100, required=False, allow_blank=True)
-    Posicao = serializers.CharField(max_length=100, required=False, allow_blank=True)        
+    Posicao = serializers.CharField(max_length=100, required=False, allow_blank=True)       
+
+class FavoritosTimeSerializer(serializers.ModelSerializer):
+    # O IdUsuario será preenchido automaticamente com base no usuário autenticado (requisição)
+    # Por isso, usamos `ReadOnlyField` para garantir que ele não seja enviado no corpo da requisição.
+    IdUsuario = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = FavoritosTime
+        fields = ['IdUsuario', 'IdTime', 'Nome', 'Pais']
+
+    def create(self, validated_data):
+        # Associa o usuário da requisição ao criar o favorito
+        validated_data['IdUsuario'] = self.context['request'].user
+        try:
+            # `unique_together` já impede a criação, mas aqui garantimos uma mensagem clara.
+            instance = FavoritosTime.objects.create(**validated_data)
+            return instance
+        except Exception as e:
+            raise serializers.ValidationError({"detail": f"Erro ao criar favorito: {e}"})
+ 

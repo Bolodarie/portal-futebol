@@ -1,12 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin # Importa o UserAdmin padrão
 from django.contrib.auth.models import User # Importa o modelo User do Django
-from .models import PerfilUsuario, FavoritosTime, FavoritosJogador, FavoritosCompeticao
+from .models import PerfilUsuario, FavoritosTime, FavoritosJogador
 
 # Registra seus modelos Favoritos para que apareçam no admin
 admin.site.register(FavoritosTime)
 admin.site.register(FavoritosJogador)
-admin.site.register(FavoritosCompeticao)
 
 # Define um inline para o PerfilUsuario.
 # Isso permite que o PerfilUsuario seja editado diretamente na página de edição do User.

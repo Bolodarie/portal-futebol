@@ -7,6 +7,9 @@ from .serializers import UserRegistrationSerializer
 from django.shortcuts import get_object_or_404
 from .models import FavoritosJogador
 from .serializers import FavoritosJogadorSerializer, FavoritosJogadorCreateSerializer
+from rest_framework.views import APIView
+from .models import FavoritosTime
+from .serializers import FavoritosTimeSerializer
 
 class UserRegistrationView(generics.CreateAPIView):
     """
@@ -102,3 +105,37 @@ def verificar_favorito(request, jogador_id):
     ).exists()
     
     return Response({'is_favorite': is_favorite})
+
+class FavoritosTimeAPIView(APIView):
+    """
+    API para gerenciar os times favoritos de um usuário.
+    """
+    permission_classes = [IsAuthenticated] # Garante que apenas usuários logados acessem
+
+    def post(self, request, *args, **kwargs):
+        """
+        Adiciona um time aos favoritos do usuário logado.
+        Espera no corpo da requisição: { "IdTime": 123, "Nome": "Nome do Time", "Pais": "País do Time" }
+        """
+        serializer = FavoritosTimeSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class FavoritoTimeDetailAPIView(APIView):
+    """
+    API para remover um time favorito específico.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, time_id, *args, **kwargs):
+        """
+        Remove um time dos favoritos do usuário logado com base no ID do time.
+        """
+        try:
+            favorito = FavoritosTime.objects.get(IdUsuario=request.user, IdTime=time_id)
+            favorito.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except FavoritosTime.DoesNotExist:
+            return Response({"error": "Time favorito não encontrado."}, status=status.HTTP_404_NOT_FOUND)
