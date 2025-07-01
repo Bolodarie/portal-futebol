@@ -15,12 +15,12 @@ const GameCard = ({ game }) => {
         <span className={`status finished`}>{game.fixture.status.long}</span>
         <div className="score">
           <div>
-            <img src={game.teams.home.logo} alt="Time mandante" className='team-logo' />
+            <img src={game.teams.home.logo} alt="Time mandante" className='logo' />
             <strong>{game.teams.home.name}</strong>
             <label className="goal-score">{game.goals.home}</label>
           </div>
           <div>
-            <img src={game.teams.away.logo} alt="Time visitante" className='team-logo' />
+            <img src={game.teams.away.logo} alt="Time visitante" className='logo' />
             <strong>{game.teams.away.name}</strong>
             <label className="goal-score">{game.goals.away}</label>
           </div>

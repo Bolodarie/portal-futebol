@@ -48,3 +48,10 @@ def get_match_info(match_id):
     if response.status_code == 200:
         return response.json()
     return {"error": "Erro ao buscar informações da partida"}
+
+def get_match_lineups(match_id):
+    url = f'{BASE_URL}/fixtures/lineups?fixture={match_id}'
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        return response.json()
+    return {"error": "Erro ao buscar informações da partida"}
