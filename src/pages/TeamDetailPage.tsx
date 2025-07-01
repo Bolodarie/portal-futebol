@@ -1,50 +1,140 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { mockDatabase } from '../mocks/mockDatabase';
-import { useAuth } from '../context/AuthContext'; // Importando o contexto
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import DetailHeader from '../components/DetailHeader';
+import StatCard from '../components/StatCard';
+import './DetailPage.css';
 
 const TeamDetailPage = () => {
   const { id } = useParams();
-  const team = mockDatabase.times.find(t => t.id === parseInt(id));
+  const navigate = useNavigate();
+  const { isLoggedIn, favorites, addFavorite, removeFavorite, getToken } = useAuth();
 
-  // Pega o estado e as funções do contexto
-  const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
+  const [teamData, setTeamData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Verifica se este time já está nos favoritos
+  useEffect(() => {
+    const fetchTeamData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`http://localhost:8000/api/teams/${id}/`);
+        if (!response.ok) {
+          throw new Error(`Erro na API: ${response.statusText} (Status: ${response.status})`);
+        }
+        const data = await response.json();
+        if (data.response && data.response.length > 0) {
+          setTeamData(data.response[0]);
+        } else {
+          throw new Error("Time não encontrado na API.");
+        }
+      } catch (err) {
+        setError(err.message);
+        console.error("Falha ao buscar detalhes do time:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeamData();
+  }, [id]); // Removido getToken da dependência, pois ele não deve mudar.
+
+  if (loading) return <div>Carregando...</div>;
+  if (error) return <div>Erro: {error}</div>;
+  if (!teamData) return <div>Time não encontrado!</div>;
+
+  const { team, venue } = teamData;
   const isFavorited = favorites.some(fav => fav.id === team.id && fav.type === 'team');
 
-  const handleFavoriteClick = () => {
-    // Cria o objeto 'item' com o formato que o nosso contexto espera
-    const teamItem = { id: team.id, name: team.nome, type: 'team', path: `/time/${team.id}` };
-    
+  const handleFavoriteClick = async () => {
+    const token = getToken(); // Pega o token de autenticação
+    if (!token) {
+      toast.error("Você precisa estar logado para favoritar.");
+      return;
+    }
+
+    const teamItem = { id: team.id, name: team.name, type: 'team', path: `/time/${team.id}` };
+
     if (isFavorited) {
-      removeFavorite(teamItem);
+      // --- LÓGICA PARA REMOVER DOS FAVORITOS (DELETE) ---
+      try {
+        const response = await fetch(`http://localhost:8000/api/favorites/teams/${team.id}/`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Token ${token}`, // Envia o token JWT
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) { // Status 204 No Content é 'ok'
+          removeFavorite(teamItem); // Atualiza o estado local no AuthContext
+          toast.info(`${team.name} removido dos favoritos.`);
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || 'Falha ao remover favorito.');
+        }
+      } catch (err) {
+        console.error("Erro ao remover favorito:", err);
+        toast.error(`Erro: ${err.message}`);
+      }
     } else {
-      addFavorite(teamItem);
+      // --- LÓGICA PARA ADICIONAR AOS FAVORITOS (POST) ---
+      try {
+        const response = await fetch(`http://localhost:8000/api/favorites/teams/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`, // Envia o token JWT
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            IdTime: team.id,
+            Nome: team.name,
+            Pais: team.country, // Certifique-se que `team.country` existe no seu objeto `team`
+          }),
+        });
+
+        if (response.status === 201) {
+          addFavorite(teamItem); // Atualiza o estado local no AuthContext
+          toast.success(`${team.name} adicionado aos favoritos.`);
+        } else {
+          const errorData = await response.json();
+          // `unique_together` no Django pode retornar um erro específico
+          const errorMessage = errorData.non_field_errors?.[0] || 'Falha ao adicionar favorito.';
+          throw new Error(errorMessage);
+        }
+      } catch (err) {
+        console.error("Erro ao adicionar favorito:", err);
+        toast.error(`Erro: ${err.message}`);
+      }
     }
   };
 
-  if (!team) {
-    return <div className="main-content"><h2>Time não encontrado!</h2></div>;
-  }
-
   return (
     <div className="main-content">
-      <h1>{team.nome}</h1>
-
-      {/* Mostra o botão apenas se o usuário estiver logado */}
+      <img src={`https://media.api-sports.io/football/teams/${team.id}.png`} alt="" className='team-photo' />
+      <DetailHeader
+        name={team.name}
+        country={team.country}
+        subtitle={`Fundado em ${team.founded}`}
+      />
+      
       {isLoggedIn && (
-        <button onClick={handleFavoriteClick} className="auth-button" style={{marginBottom: '20px', width: 'auto'}}>
+        <button onClick={handleFavoriteClick} className="auth-button" style={{ width: 'auto' }}>
           {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
         </button>
       )}
-      
-      <ul>
-        <li><strong>Técnico:</strong> {team.tecnico}</li>
-        <li><strong>Estádio:</strong> {team.estadio}</li>
-        <li><strong>Títulos (Brasileirão):</strong> {team.titulos}</li>
-      </ul>
-      <Link to="/">Voltar para a home</Link>
+
+      <div className="stats-grid">
+        <StatCard title="Estádio" value={venue.name || "N/A"} />
+        <StatCard title="Capacidade" value={venue.capacity || "N/A"} />
+        <StatCard title="Cidade" value={venue.city || "N/A"} />
+        <StatCard title="País" value={team.country} />
+      </div>
+
+      <a onClick={() => navigate(-1)} className="back-link">
+        ← Voltar
+      </a>
     </div>
   );
 };

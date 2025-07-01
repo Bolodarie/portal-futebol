@@ -24,7 +24,39 @@
   transition: all 0.2s ease-in-out;
 }
 
-.result-item:hover {
+.result-item-rich:hover {
   transform: translateX(5px);
   background-color: #f8f9fa;
+}
+
+.result-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #eee;
+  background-color: #f0f2f5;
+}
+
+.result-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-name {
+  font-weight: bold;
+}
+
+.result-subtext {
+  font-size: 13px;
+  color: #666;
+}
+
+.player-pic {
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }

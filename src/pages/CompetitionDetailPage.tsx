@@ -1,50 +1,55 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { mockDatabase } from '../mocks/mockDatabase';
-import { useAuth } from '../context/AuthContext'; // Importando o contexto
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import DetailHeader from '../components/DetailHeader';
+import StatCard from '../components/StatCard';
+import './DetailPage.css';
 
 const CompetitionDetailPage = () => {
   const { id } = useParams();
   const competition = mockDatabase.competicoes.find(c => c.id === parseInt(id));
+  const navigate = useNavigate();
 
-  // Pega o estado e as funções do contexto
   const { isLoggedIn, favorites, addFavorite, removeFavorite } = useAuth();
-
-  // Verifica se esta competição já está nos favoritos
-  const isFavorited = favorites.some(fav => fav.id === competition.id && fav.type === 'competition');
-
-  const handleFavoriteClick = () => {
-    // Cria o objeto 'item' com o formato que o nosso contexto espera
-    const competitionItem = { id: competition.id, name: competition.nome, type: 'competition', path: `/competicao/${competition.id}` };
-    
-    if (isFavorited) {
-      removeFavorite(competitionItem);
-    } else {
-      addFavorite(competitionItem);
-    }
-  };
 
   if (!competition) {
     return <div className="main-content"><h2>Competição não encontrada!</h2></div>;
   }
 
+  const isFavorited = favorites.some(fav => fav.id === competition.id && fav.type === 'competition');
+
+  const handleFavoriteClick = () => {
+    const competitionItem = { id: competition.id, name: competition.nome, type: 'competition', path: `/competicao/${competition.id}` };
+    if (isFavorited) {
+      removeFavorite(competitionItem);
+       toast.info(`${competition.nome} removido dos favoritos.`);
+    } else {
+      addFavorite(competitionItem);
+       toast.info(`${competition.nome} adicionado aos favoritos.`);
+    }
+  };
+
   return (
     <div className="main-content">
-      <h1>{competition.nome}</h1>
-      
-      {/* Mostra o botão apenas se o usuário estiver logado */}
-      {isLoggedIn && (
-        <button onClick={handleFavoriteClick} className="auth-button" style={{marginBottom: '20px', width: 'auto'}}>
-          {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
-        </button>
-      )}
+      <DetailHeader name={competition.nome}>
+        {isLoggedIn && (
+          <button onClick={handleFavoriteClick} className="auth-button" style={{width: 'auto'}}>
+            {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
+          </button>
+        )}
+      </DetailHeader>
 
-      <ul>
-        <li><strong>País/Região:</strong> {competition.pais}</li>
-        <li><strong>Nº de Times:</strong> {competition.times}</li>
-        <li><strong>Atual Campeão:</strong> {competition.atualCampeao}</li>
-      </ul>
-      <Link to="/">Voltar para a home</Link>
+      <div className="stats-grid">
+        <StatCard title="País/Região" value={competition.pais} />
+        <StatCard title="Nº de Times" value={competition.times} />
+        <StatCard title="Atual Campeão" value={competition.atualCampeao} />
+      </div>
+
+      <button onClick={() => navigate(-1)} className="back-link">
+        ← Voltar
+      </button>
     </div>
   );
 };

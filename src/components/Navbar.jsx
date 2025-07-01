@@ -24,7 +24,6 @@ const Navbar = () => {
 
         <ul className="nav-menu">
           <li className="nav-item">
-            {/* O link principal agora pode ser chamado de "Home" ou "Jogos" */}
             <Link to="/" className="nav-links">
               Jogos do Dia
             </Link>
@@ -32,14 +31,13 @@ const Navbar = () => {
           
           {isLoggedIn ? (
             <>
-              {/* NOVO LINK PARA A PÁGINA DE FAVORITOS */}
               <li className="nav-item">
                 <Link to="/favoritos" className="nav-links">
                   Favoritos
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/admin" className="nav-links">
+                <Link to="http://localhost:8000/admin/" className="nav-links">
                   Admin
                 </Link>
               </li>

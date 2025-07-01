@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   padding: 50px 20px;
-  min-height: calc(100vh - 80px); /* 100% da altura da tela menos a altura do navbar */
+  min-height: calc(100vh - 80px);
   background-color: #F4F4F9;
 }
 
@@ -78,4 +78,13 @@
 
 .switch-form-link a:hover {
   text-decoration: underline;
+}
+.error-text {
+  color: #E74C3C;
+  font-size: 13px;
+  text-align: left;
+  margin-top: 5px;
+}
+.input-error {
+  border-color: #E74C3C !important;
 }

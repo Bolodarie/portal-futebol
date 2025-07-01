@@ -1,6 +1,6 @@
 
 .game-card {
-    width: 300px;
+    width: 320px;
     background-color: #FFFFFF;
     padding: 20px;
     border-radius: 8px;
@@ -60,4 +60,20 @@
 
 .stats li {
     margin-bottom: 5px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 15px;
+}
+
+.goal-score {
+  margin-left: 10px; /* ou a distância que você preferir */
+}
+
+.team-away {
+    margin-top: 0.7rem;
 }
