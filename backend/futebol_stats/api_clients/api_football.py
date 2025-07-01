@@ -1,4 +1,3 @@
-from rest_framework.decorators import api_view
 import requests
 from datetime import datetime
 from dotenv import load_dotenv
@@ -11,7 +10,6 @@ load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 API_KEY = os.getenv('SECRET_KEY')
 BASE_URL = 'https://v3.football.api-sports.io'
-print("🔑 API_KEY carregada:", API_KEY)
 
 if not API_KEY:
     raise ValueError("API_KEY não definida no .env")
