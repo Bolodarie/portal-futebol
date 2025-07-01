@@ -207,3 +207,7 @@
     border-bottom: none;
     }
 }
+
+.link {
+    text-decoration: none;
+}

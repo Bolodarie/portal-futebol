@@ -99,7 +99,7 @@ const MatchDetailPage = () => {
             {playerObj.player.id ? (
               <Link 
                 to={`/jogador/${playerObj.player.id}`} 
-                className="player-name player-link"
+                className="player-name player-link link"
               >
                 {playerObj.player.name}
               </Link>
@@ -117,12 +117,14 @@ const MatchDetailPage = () => {
       {/* Cabeçalho com logos e nomes dos times */}
       <div className="match-header">
         <div className="team-info">
-          <img 
-            src={homeTeamLineup.team.logo} 
-            alt={`${homeTeamLineup.team.name} logo`}
-            className="team-logo"
-          />
-          <h2>{homeTeamLineup.team.name}</h2>
+          <Link to={`/time/${homeTeamLineup.team.id}`} className='link'>
+            <img 
+              src={homeTeamLineup.team.logo} 
+              alt={`${homeTeamLineup.team.name} logo`}
+              className="team-logo"
+            />
+            <h2>{homeTeamLineup.team.name}</h2>
+          </Link>
           <p className="formation">Formação: {homeTeamLineup.formation}</p>
         </div>
         
@@ -131,12 +133,14 @@ const MatchDetailPage = () => {
         </div>
         
         <div className="team-info">
-          <img 
-            src={awayTeamLineup.team.logo} 
-            alt={`${awayTeamLineup.team.name} logo`}
-            className="team-logo"
-          />
-          <h2>{awayTeamLineup.team.name}</h2>
+          <Link to={`/time/${awayTeamLineup.team.id}`} className='link'>
+            <img 
+              src={awayTeamLineup.team.logo} 
+              alt={`${awayTeamLineup.team.name} logo`}
+              className="team-logo"
+            />
+            <h2>{awayTeamLineup.team.name}</h2>
+          </Link>
           <p className="formation">Formação: {awayTeamLineup.formation}</p>
         </div>
       </div>
