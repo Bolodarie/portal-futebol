@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.db import transaction # Importa transaction para garantir atomicidade
+from .models import FavoritosJogador
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     """
@@ -56,3 +57,23 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             return user
         except Exception as e:
             raise serializers.ValidationError(f"Erro ao criar o usuário: {e}")
+        
+class FavoritosJogadorSerializer(serializers.ModelSerializer):
+    # Campos para exibição
+    usuario_nome = serializers.CharField(source='IdUsuario.username', read_only=True)
+    
+    class Meta:
+        model = FavoritosJogador
+        fields = ['id', 'IdJogador', 'Nome', 'Nacionalidade', 'Posicao', 'usuario_nome']
+        read_only_fields = ['id', 'usuario_nome']
+    
+    def create(self, validated_data):
+        # Adiciona o usuário atual na criação
+        validated_data['IdUsuario'] = self.context['request'].user
+        return super().create(validated_data)
+
+class FavoritosJogadorCreateSerializer(serializers.Serializer):
+    IdJogador = serializers.IntegerField()
+    Nome = serializers.CharField(max_length=255)
+    Nacionalidade = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    Posicao = serializers.CharField(max_length=100, required=False, allow_blank=True)        

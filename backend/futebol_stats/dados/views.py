@@ -1,7 +1,12 @@
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, status
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from .serializers import UserRegistrationSerializer
+from django.shortcuts import get_object_or_404
+from .models import FavoritosJogador
+from .serializers import FavoritosJogadorSerializer, FavoritosJogadorCreateSerializer
 
 class UserRegistrationView(generics.CreateAPIView):
     """
@@ -25,3 +30,75 @@ class UserRegistrationView(generics.CreateAPIView):
             status=status.HTTP_201_CREATED,
             headers=headers
         )
+    
+class FavoritosJogadorListView(generics.ListAPIView):
+    """Lista todos os favoritos do usuário logado"""
+    serializer_class = FavoritosJogadorSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return FavoritosJogador.objects.filter(IdUsuario=self.request.user)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def adicionar_favorito(request):
+    """Adiciona um jogador aos favoritos"""
+    serializer = FavoritosJogadorCreateSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        IdJogador = serializer.validated_data['IdJogador']
+        Nome = serializer.validated_data['Nome']
+        Nacionalidade = serializer.validated_data.get('Nacionalidade', '')
+        Posicao = serializer.validated_data.get('Posicao', '')
+        
+        # Verifica se já existe nos favoritos
+        if FavoritosJogador.objects.filter(
+            IdUsuario=request.user, 
+            IdJogador=IdJogador
+        ).exists():
+            return Response(
+                {'error': 'Jogador já está nos favoritos'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Cria o favorito
+        favorito = FavoritosJogador.objects.create(
+            IdUsuario=request.user,
+            IdJogador=IdJogador,
+            Nome=Nome,
+            Nacionalidade=Nacionalidade,
+            Posicao=Posicao
+        )
+        
+        response_serializer = FavoritosJogadorSerializer(favorito)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def remover_favorito(request, jogador_id):
+    """Remove um jogador dos favoritos"""
+    try:
+        favorito = FavoritosJogador.objects.get(
+            IdUsuario=request.user,
+            IdJogador=jogador_id
+        )
+        favorito.delete()
+        return Response({'message': 'Favorito removido com sucesso'}, status=status.HTTP_200_OK)
+    except FavoritosJogador.DoesNotExist:
+        return Response(
+            {'error': 'Favorito não encontrado'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def verificar_favorito(request, jogador_id):
+    """Verifica se um jogador está nos favoritos"""
+    is_favorite = FavoritosJogador.objects.filter(
+        IdUsuario=request.user,
+        IdJogador=jogador_id
+    ).exists()
+    
+    return Response({'is_favorite': is_favorite})

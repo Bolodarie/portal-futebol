@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djoser',
     'matches',
-    'dados'
+    'dados',
+    'rest_framework.authtoken',
+    'authentication'
 ]
 
 MIDDLEWARE = [
@@ -168,6 +170,17 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'DEBUG',
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # ... outras classes de autenticação se houver
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        # ... ou outra permissão padrão
+    ],
 }
 
 print("⚠️ Middleware CORS carregado!")

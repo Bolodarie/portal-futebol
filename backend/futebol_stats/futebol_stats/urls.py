@@ -27,5 +27,6 @@ urlpatterns = [
     path('api/matches/lineups', include('matches.urls')),
     path('api/', include('dados.urls')),
     path('api/players/', include('players.urls')),
+    path('api/auth/', include('authentication.urls')),
     # Em breve: teams, players, etc
 ]

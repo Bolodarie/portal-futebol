@@ -7,11 +7,12 @@ import './AuthForm.css';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const validateForm = () => {
     const newErrors = {};
     
@@ -30,18 +31,45 @@ const LoginPage = () => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validateForm();
 
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
-    } else {
-      setErrors({});
-      console.log('Tentativa de login com:', { email, password });
-      login();
-      toast.success('Login realizado com sucesso!');
-      navigate('/');
+      return;
+    }
+
+    setErrors({});
+    setLoading(true);
+
+    try {
+      const result = await login(email, password);
+      
+      if (result.success) {
+        toast.success('Login realizado com sucesso!');
+        navigate('/');
+      } else {
+        // Tratar diferentes tipos de erro
+        if (result.error.includes('credentials') || result.error.includes('Invalid')) {
+          setErrors({ 
+            general: 'Email ou senha incorretos.' 
+          });
+        } else {
+          setErrors({ 
+            general: result.error || 'Erro ao fazer login. Tente novamente.' 
+          });
+        }
+        toast.error(result.error || 'Erro ao fazer login');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ 
+        general: 'Erro de conexão. Verifique sua internet e tente novamente.' 
+      });
+      toast.error('Erro de conexão');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,6 +77,13 @@ const LoginPage = () => {
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
         <h2>Entrar no Portal</h2>
+        
+        {errors.general && (
+          <div className="error-banner">
+            <p>{errors.general}</p>
+          </div>
+        )}
+        
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -57,9 +92,11 @@ const LoginPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={errors.email ? 'input-error' : ''}
+            disabled={loading}
           />
           {errors.email && <p className="error-text">{errors.email}</p>}
         </div>
+        
         <div className="form-group">
           <label htmlFor="password">Senha</label>
           <input
@@ -68,10 +105,19 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={errors.password ? 'input-error' : ''}
+            disabled={loading}
           />
           {errors.password && <p className="error-text">{errors.password}</p>}
         </div>
-        <button type="submit" className="auth-button">Entrar</button>
+        
+        <button 
+          type="submit" 
+          className="auth-button" 
+          disabled={loading}
+        >
+          {loading ? 'Entrando...' : 'Entrar'}
+        </button>
+        
         <p className="switch-form-link">
           Não tem uma conta? <Link to="/register">Cadastre-se</Link>
         </p>
