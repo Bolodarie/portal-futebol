@@ -111,8 +111,8 @@ const TeamDetailPage = () => {
   };
 
   return (
-    <div className="detail-page">
-      <img src={`https://media.api-sports.io/football/teams/${team.id}.png`} alt={`${team.name}`} />
+    <div className="main-content">
+      <img src={`https://media.api-sports.io/football/teams/${team.id}.png`} alt="" className='team-photo' />
       <DetailHeader
         name={team.name}
         country={team.country}
@@ -120,7 +120,7 @@ const TeamDetailPage = () => {
       />
       
       {isLoggedIn && (
-        <button onClick={handleFavoriteClick} className="favorite-button">
+        <button onClick={handleFavoriteClick} className="auth-button" style={{ width: 'auto' }}>
           {isFavorited ? 'Remover dos Favoritos' : 'Adicionar aos Favoritos'}
         </button>
       )}

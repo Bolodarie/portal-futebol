@@ -37,7 +37,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/admin" className="nav-links">
+                <Link to="http://localhost:8000/admin/" className="nav-links">
                   Admin
                 </Link>
               </li>
