@@ -13,21 +13,43 @@
 }
 
 .result-item {
-  display: flex;         /* Ativa o modo Flexbox */
-  align-items: center;   /* Alinha os itens verticalmente ao centro */
-  gap: 12px;             /* Cria um espaço de 12px entre a imagem e o texto */
-  
-  /* Estilos opcionais para melhorar a aparência */
-  text-decoration: none; /* Remove o sublinhado padrão do link */
-  color: inherit;        /* Faz com que o texto herde a cor do elemento pai */
-  padding: 8px;          /* Adiciona um espaçamento interno para o item não ficar colado nas bordas */
-  border-radius: 10px;   /* Arredonda as bordas do container do link */
-  transition: background-color 0.2s; /* Adiciona uma transição suave para o hover */
+  display: block;
+  padding: 12px;
+  background-color: #fff;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease-in-out;
 }
 
-.result-item:hover {
+.result-item-rich:hover {
   transform: translateX(5px);
   background-color: #f8f9fa;
+}
+
+.result-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #eee;
+  background-color: #f0f2f5;
+}
+
+.result-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.result-name {
+  font-weight: bold;
+}
+
+.result-subtext {
+  font-size: 13px;
+  color: #666;
 }
 
 .player-pic {
