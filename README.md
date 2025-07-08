@@ -14,3 +14,14 @@ If you are developing a production application, we recommend using TypeScript wi
 # Configuração da API externa
 - É necessário um arquivo .env em backend/futebol_stats informando a API Key para que o projeto funcione corretamente.
 - Esse arquivo foi disponibilizado na entrega da atividade.
+
+# Rodando o projeto
+- Para executar o frontend, abra um terminal e execute os comandos:
+  - `npm install`
+  - `npm run dev`
+  - Acesse a URL exibida no console: http://localhost:5173
+- Para executar o backend, abra um terminal e execute os comandos:
+  - `python manage.py migrate`
+  - `python manage.py runserver`
+- Para criar um usuário administrador, execute o comando `python manage.py createsuperuser` e insira suas informações.
+- É necessário manter o frontend e o backend rodando ao mesmo tempo para que a aplicação funcione corretamente.
